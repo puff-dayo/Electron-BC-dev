@@ -12,6 +12,14 @@ type TextTag =
   | 'MenuItem::Tools::Exit'
   | 'MenuItem::Tools::OpenDoHConfigFile'
   | 'MenuItem::Tools::DoHConfigTips'
+  | 'MenuItem::Tools::EnableProxy'
+  | 'MenuItem::Tools::EnableProxy::Info'
+  | 'MenuItem::Tools::SetProxy'
+  | 'MenuItem::Tools::SetProxy::Placeholder'
+  | 'MenuItem::Tools::SetProxy::Title'
+  | 'MenuItem::Tools::SetProxy::InvalidUrl'
+  | 'MenuItem::Tools::ProxyStatus'
+  | 'MenuItem::Tools::ProxyStatus::Disabled'
   | 'MenuItem::Script'
   | 'MenuItem::Script::InstallTips'
   | 'MenuItem::Script::NeedRefresh'
@@ -68,4 +76,5 @@ type TextTag =
   | 'Alert::Cache::RelocateConfirm'
   | 'Preload::FetchingBCVersion'
   | 'Preload::FetchingBCVersionResult'
-  | 'Preload::FetchingBCVersionFallback';
+  | 'Preload::FetchingBCVersionFallback'
+  | 'Alert::Proxy::ClearConfirm';

@@ -15,6 +15,16 @@ const translation: Record<TextTag, string> = {
   'MenuItem::Tools::OpenDoHConfigFile': 'Open DoH Config File',
   'MenuItem::Tools::DoHConfigTips': 'DNS over HTTPS Config',
 
+  'MenuItem::Tools::EnableProxy': 'Enable HTTP Proxy',
+  'MenuItem::Tools::EnableProxy::Info': 'Route all connections through an HTTP proxy',
+  'MenuItem::Tools::SetProxy': 'Set Proxy Server...',
+  'MenuItem::Tools::SetProxy::Placeholder': 'http://127.0.0.1:7890',
+  'MenuItem::Tools::SetProxy::Title': 'Set Proxy Server URL',
+  'MenuItem::Tools::SetProxy::InvalidUrl':
+    "Please input a valid proxy URL, e.g. 'http://127.0.0.1:7890' or 'socks5://127.0.0.1:1080'",
+  'MenuItem::Tools::ProxyStatus': 'Proxy Status',
+  'MenuItem::Tools::ProxyStatus::Disabled': 'Disabled',
+
   'MenuItem::Script': 'Script',
   'MenuItem::Script::NeedRefresh': 'Need Refresh to Apply Changes',
   'MenuItem::Script::SubMenu::Switch': 'Switch Script',
@@ -88,6 +98,8 @@ const translation: Record<TextTag, string> = {
   'Preload::FetchingBCVersion': 'Fetching BondageClub version information...',
   'Preload::FetchingBCVersionResult': 'BondageClub Version: {version}',
   'Preload::FetchingBCVersionFallback': 'Using calculated version: {version}',
+
+  'Alert::Proxy::ClearConfirm': 'Disable proxy and clear proxy settings?',
 };
 
 export default translation;

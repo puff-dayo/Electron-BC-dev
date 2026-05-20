@@ -13,6 +13,16 @@ const translation: Record<TextTag, string> = {
   'MenuItem::Tools::OpenDoHConfigFile': '打开DoH配置文件',
   'MenuItem::Tools::DoHConfigTips': 'DNS over HTTPS 配置',
 
+  'MenuItem::Tools::EnableProxy': '启用HTTP代理',
+  'MenuItem::Tools::EnableProxy::Info': '所有网络连接通过HTTP代理',
+  'MenuItem::Tools::SetProxy': '设置代理服务器...',
+  'MenuItem::Tools::SetProxy::Placeholder': 'http://127.0.0.1:7890',
+  'MenuItem::Tools::SetProxy::Title': '设置代理服务器URL',
+  'MenuItem::Tools::SetProxy::InvalidUrl':
+    "请输入有效的代理URL，例如 'http://127.0.0.1:7890' 或 'socks5://127.0.0.1:1080'",
+  'MenuItem::Tools::ProxyStatus': '代理状态',
+  'MenuItem::Tools::ProxyStatus::Disabled': '未启用',
+
   'MenuItem::Script': '脚本',
   'MenuItem::Script::Load From URL': '从网址加载',
   'MenuItem::Script::NeedRefresh': '需要刷新以应用更改',
@@ -78,6 +88,8 @@ const translation: Record<TextTag, string> = {
   'Preload::FetchingBCVersion': '正在获取BondageClub版本信息...',
   'Preload::FetchingBCVersionResult': 'BondageClub版本: {version}',
   'Preload::FetchingBCVersionFallback': '使用替代版本号: {version}',
+
+  'Alert::Proxy::ClearConfirm': '确认禁用代理并清除代理设置？',
 };
 
 export default translation;
