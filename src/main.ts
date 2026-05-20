@@ -7,10 +7,13 @@ import { createFetchBCVersionWindow } from './loading';
 import { MainWindowProvider } from './main/mainWindow';
 import settings from 'electron-settings';
 import { AssetCache } from './main/AssetCache';
+import { initProxyStartup, initProxy } from './main/proxy';
 
 let mainWindowProvider: MainWindowProvider | undefined;
 
 console.log('Setting file:', settings.file());
+
+initProxyStartup();
 
 app.whenReady().then(async () => {
   if (!app.requestSingleInstanceLock()) {
@@ -24,6 +27,7 @@ app.whenReady().then(async () => {
   MyProtocol.init();
   Credential.init();
   AssetCache.init();
+  await initProxy();
 
   const results = await createFetchBCVersionWindow();
   if (!results) return;

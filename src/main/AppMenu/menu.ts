@@ -4,6 +4,7 @@ import { MyAppMenuConstructorOption } from './type';
 import { builtinMenu } from './builtins';
 import { aboutMenu } from './about';
 import { cacheMenu } from './cache';
+import { proxyMenu } from './proxy';
 import { DoH } from '../DoH';
 
 export function makeMenu(options: MyAppMenuConstructorOption) {
@@ -40,6 +41,10 @@ export function makeMenu(options: MyAppMenuConstructorOption) {
           type: 'separator',
         },
         ...cacheMenu(options),
+        {
+          type: 'separator',
+        },
+        ...proxyMenu(options),
         {
           type: 'separator',
         },
