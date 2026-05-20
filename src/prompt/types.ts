@@ -3,7 +3,7 @@ import { BrowserWindow } from "electron";
 
 export type PromptType = "input" | "confirmCancel" | "info";
 
-export type PromptInputType = "userscript" | "ebcspackage" | "url";
+export type PromptInputType = "userscript" | "ebcspackage" | "url" | "proxyurl";
 
 export interface PromptOptions {
   type: PromptType;

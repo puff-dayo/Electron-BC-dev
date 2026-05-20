@@ -3,7 +3,7 @@ import { reloadAllMenu } from '../reloadAllMenu'
 import { openScriptFolder } from '../script'
 import { ScriptResource } from '../script/resource'
 import { MyAppMenuConstructorOption } from './type'
-import { dialog, ipcMain } from 'electron'
+import { dialog, ipcMain, net } from 'electron'
 import fs from 'fs'
 import {
   exportScript,
@@ -50,7 +50,7 @@ export function scriptMenu ({
   ipcMain.on('load-script-package', async (id: any, url) => {
     if (id !== window.webContents.id) return
     try {
-      const response = await fetch(url)
+      const response = await net.fetch(url, { bypassCustomProtocolHandlers: true })
       if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`)
       const buffer = Buffer.from(await response.arrayBuffer())

@@ -3,7 +3,7 @@ import { getScriptFolder } from './constants'
 import { readMeta } from './meta'
 import { ScriptConfig } from './config'
 import path from 'path'
-import { ipcMain } from 'electron'
+import { ipcMain, net } from 'electron'
 import EventEmitter from 'events'
 import { ScriptMeta, ScriptResourceItem } from './types'
 
@@ -54,7 +54,7 @@ type ScriptEvent = {
 const scriptEventEmmiter = new EventEmitter<ScriptEvent>()
 
 async function fetchScript (url: string) {
-  const response = await fetch(url)
+  const response = await net.fetch(url, { bypassCustomProtocolHandlers: true })
   if (!response.ok) throw new Error(`Failed to fetch ${url}`)
   const content = await response.text()
   const meta = readMeta(content)

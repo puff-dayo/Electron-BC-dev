@@ -9,6 +9,9 @@ const userScriptRegex =
 const ebcPackageRegex =
   /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,32}\b([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)\.ebcspkg$/;
 
+const proxyUrlRegex =
+  /^(https?|socks[45]h?):\/\/([^@\s]+@)?[a-zA-Z0-9.-]+(:\d+)?$/;
+
 const defaultConfirm = (value?: string) =>
   window.PromptAPI.sendResult({ ok: true, value });
 const defaultCancel = () =>
@@ -76,6 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return userScriptRegex.test(input.value);
       } else if (data.inputType === "ebcspackage") {
         return ebcPackageRegex.test(input.value);
+      } else if (data.inputType === "proxyurl") {
+        return proxyUrlRegex.test(input.value) || input.value === '';
       } else {
         return true;
       }
