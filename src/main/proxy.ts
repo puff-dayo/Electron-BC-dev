@@ -70,11 +70,15 @@ function buildProxyRules(proxyUrl: string): string | null {
 
   const addr = `${parsed.host}:${parsed.port}`;
 
-  if (parsed.type === 'socks4' || parsed.type === 'socks5') {
-    return `socks=${addr}`;
-  } else {
-    return `http=${addr};https=${addr}`;
+  if (parsed.type === 'socks5') {
+    return `socks5://${addr}`;
   }
+
+  if (parsed.type === 'socks4') {
+    return `socks4://${addr}`;
+  }
+
+  return `http=${addr};https=${addr}`;
 }
 
 function buildCliProxySwitch(proxyUrl: string): string | null {
@@ -119,7 +123,11 @@ export async function applyProxyToSession(
 
     if (proxyRules) {
       console.log(`[Proxy] Applying proxyRules: ${proxyRules}`);
-      await ses.setProxy({ proxyRules });
+      await ses.setProxy({
+        proxyRules,
+        proxyBypassRules: '<-loopback>',
+      });
+      await ses.closeAllConnections();
     } else {
       console.error(`[Proxy] Failed to parse proxy URL: ${config.url}`);
       await ses.setProxy({ mode: 'direct' });
