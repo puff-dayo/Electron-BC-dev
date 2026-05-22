@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import { app, shell } from "electron";
 
 export const SettingTag = 'ScriptManagerConfig';
+export const ProfileSettingTag = 'ScriptManagerProfiles'
 
 const DataPath = path.join(app.getPath('appData'), 'Bondage Club', 'Electron App');
 

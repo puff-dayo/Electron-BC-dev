@@ -61,6 +61,12 @@ export class ScriptState {
     return this.scripts
   }
 
+  async reloadScriptResource() {
+    this.menuItems = []
+    this.loaded = false
+    await this.loadScriptResource()
+  }
+
   needRefresh = true
 
   loaded = false
@@ -127,13 +133,18 @@ export class ScriptState {
 
   async toggleConfig (scriptName: string) {
     const script = this.scripts.find(i => i.meta.name === scriptName)
+
     if (!script) return
 
     script.setting.enabled = !script.setting.enabled
-    ScriptConfig.saveConfig({
+
+    await ScriptConfig.saveConfig({
       name: script.meta.name,
       setting: script.setting,
     })
+
+    await ScriptConfig.updateActiveProfileFromCurrentConfig()
+
     if (script.setting.enabled) await loadScripts(this.webContents, [script])
     else {
       this.menuItems = this.menuItems.filter(i => i.scriptName !== scriptName)
