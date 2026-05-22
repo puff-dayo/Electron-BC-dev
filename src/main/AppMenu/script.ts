@@ -4,6 +4,7 @@ import { openScriptFolder } from '../script'
 import { ScriptResource } from '../script/resource'
 import { MyAppMenuConstructorOption } from './type'
 import { dialog, ipcMain, net } from 'electron'
+import { openScriptProfilePanel } from '../script/profilePanel'
 import fs from 'fs'
 import {
   exportScript,
@@ -12,6 +13,7 @@ import {
   importScriptPackageBuffer
 } from '../script/export'
 import { ScriptResourceItem } from '../script/types'
+import { ScriptConfig } from '../script/config'
 
 export function scriptMenu ({
   refreshPage,
@@ -40,6 +42,37 @@ export function scriptMenu ({
     return `${sAuthor}: ${meta.author ?? sUnknown}, ${sVersion}: ${
       meta.version ?? sUnknown
     },\n ${sURL}: ${script.setting.url ?? sUnknown}`
+  }
+
+  const profileItems = (): Electron.MenuItemConstructorOptions[] => {
+    const activeProfile = ScriptConfig.activeProfile()
+
+    return ScriptConfig.profiles().map(profile => ({
+      label: profile.name,
+      type: 'radio',
+      checked: profile.name === activeProfile,
+      click: async () => {
+        await ScriptConfig.switchProfile(profile.name)
+        await scriptState.reloadScriptResource()
+        reloadAllMenu()
+        await refreshPage()
+      }
+    }))
+  }
+
+  const saveCurrentProfile = async () => {
+    const name = await MyPrompt.input(
+      parent,
+      {
+        title: 'Save current mods as profile',
+        inputPlaceholder: ScriptConfig.activeProfile()
+      }
+    )
+
+    if (!name) return
+
+    await ScriptConfig.saveCurrentAsProfile(name)
+    reloadAllMenu()
   }
 
   ipcMain.on('load-user-script', (event, url) => {
@@ -93,6 +126,15 @@ export function scriptMenu ({
       },
       {
         type: 'separator'
+      },
+      {
+        label: i18n('MenuItem::Script::ProfileManager::Title'),
+        type: 'normal',
+        click: () => openScriptProfilePanel({
+          parent,
+          scriptState,
+          refreshPage
+        })
       },
       {
         label: i18n('MenuItem::Script::ExportPackage'),

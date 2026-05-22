@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Script Profile Manager</title>
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <h1 data-i18n="profiles">Profiles</h1>
+      <div id="profiles" class="profiles"></div>
+
+      <button id="newEmpty" data-i18n="newEmpty">New Empty</button>
+      <button id="cloneActive" data-i18n="cloneActive">Clone Active</button>
+      <button id="renameProfile" data-i18n="rename">Rename</button>
+      <button id="deleteProfile" class="danger" data-i18n="delete">Delete</button>
+    </aside>
+
+    <main class="main">
+      <div class="header">
+        <h1 id="title">Profile</h1>
+        <span id="dirty" class="dirty"></span>
+      </div>
+
+      <div class="toolbar">
+        <input id="search" class="search" placeholder="Search mods" data-i18n-placeholder="searchMods">
+        <button id="enableAll" data-i18n="enableAll">Enable All</button>
+        <button id="disableAll" data-i18n="disableAll">Disable All</button>
+        <button id="invert" data-i18n="invert">Invert</button>
+      </div>
+
+      <div id="scripts" class="script-list"></div>
+
+      <div class="footer">
+        <div id="status"></div>
+        <div>
+          <button id="save" data-i18n="save">Save</button>
+          <button id="apply" class="primary" data-i18n="applyReload">Apply & Reload</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="inputModalMask" class="modal-mask">
+    <div class="modal">
+      <h2 id="inputModalTitle">Input</h2>
+      <input id="inputModalValue" type="text">
+      <div class="modal-actions">
+        <button id="inputModalCancel" type="button" data-i18n="cancel">Cancel</button>
+        <button id="inputModalOk" type="button" class="primary" data-i18n="ok">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./index.js"></script>
+</body>
+</html>
