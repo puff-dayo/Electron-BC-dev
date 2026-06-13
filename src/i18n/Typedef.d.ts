@@ -95,4 +95,9 @@ type TextTag =
   | 'Preload::FetchingBCVersion'
   | 'Preload::FetchingBCVersionResult'
   | 'Preload::FetchingBCVersionFallback'
-  | 'Alert::Proxy::ClearConfirm';
+  | 'Alert::Proxy::ClearConfirm'
+  | 'Preload::FetchingBCVersionFallbackStart'
+  | 'Preload::FetchingBCVersionFallbackTry'
+  | 'Preload::FetchingBCVersionFallbackMiss'
+  | 'Preload::FetchingBCVersionFallbackHit'
+  | 'Preload::FetchingBCVersionFallbackUnverified';

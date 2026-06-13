@@ -36,7 +36,7 @@ export async function createFetchBCVersionWindow() {
   });
 
   try {
-    win.loadFile('resource/loading.html');
+    await win.loadFile('resource/loading.html');
     webContentsSend(win, 'fetching-bc-start');
 
     const results = await fetchLatestBC();
@@ -46,10 +46,45 @@ export async function createFetchBCVersionWindow() {
     win.close();
     return results;
   } catch (error) {
-    webContentsSend(win, 'error', error);
+    webContentsSend(
+      win,
+      'fetching-bc-error',
+      error instanceof Error ? error.message : String(error)
+    );
   }
 
-  const fb_results = await fallback();
+  const fb_results = await fallback(progress => {
+    switch (progress.type) {
+      case 'start':
+        webContentsSend(win, 'fetching-bc-fallback-start');
+        break;
+
+      case 'try':
+        webContentsSend(win, 'fetching-bc-fallback-try', {
+          version: progress.version,
+        });
+        break;
+
+      case 'miss':
+        webContentsSend(win, 'fetching-bc-fallback-miss', {
+          version: progress.version,
+        });
+        break;
+
+      case 'hit':
+        webContentsSend(win, 'fetching-bc-fallback-hit', {
+          version: progress.version,
+        });
+        break;
+
+      case 'unverified':
+        webContentsSend(win, 'fetching-bc-fallback-unverified', {
+          version: progress.version,
+        });
+        break;
+    }
+  });
+
   const result = BCURLPreference.choose(fb_results);
   BCURLPreference.isFallback = true;
   webContentsSend(win, 'fetching-bc-fb', result);

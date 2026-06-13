@@ -118,6 +118,12 @@ const translation: Record<TextTag, string> = {
   'Preload::FetchingBCVersionFallback': 'Using calculated version: {version}',
 
   'Alert::Proxy::ClearConfirm': 'Disable proxy and clear proxy settings?',
+
+  'Preload::FetchingBCVersionFallbackStart': 'Unable to fetch version information, trying fallback versions...',
+  'Preload::FetchingBCVersionFallbackTry': 'Trying fallback version: {version}',
+  'Preload::FetchingBCVersionFallbackMiss': 'Fallback version unavailable: {version}',
+  'Preload::FetchingBCVersionFallbackHit': 'Found available fallback version: {version}',
+  'Preload::FetchingBCVersionFallbackUnverified': 'Using unverified fallback version: {version}',
 };
 
 export default translation;

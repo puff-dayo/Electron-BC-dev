@@ -12,7 +12,7 @@
             height: 100%;
         }
 
-        #container {
+        #log-container {
             width: 100%;
             height: 60%;
             overflow-y: hidden;
@@ -37,52 +37,86 @@
 <body>
     <div id="log-container"></div>
     <script>
-    let logCounter = 0;
+        let logCounter = 0;
 
-    function addLog(message) {
-        const container = document.getElementById('log-container');
+        function addLog(message) {
+            const container = document.getElementById('log-container');
 
-        // 创建新的一行日志
-        const item = document.createElement('div');
-        item.classList.add('log-item');
-        item.textContent = message;
+            const item = document.createElement('div');
+            item.classList.add('log-item');
+            item.textContent = message;
 
-        container.appendChild(item);
+            container.appendChild(item);
 
-        // 延迟处理日志淡化和上移的效果
-        setTimeout(() => {
-            const allLogs = document.querySelectorAll('.log-item');
-            const len = allLogs.length;
-            allLogs.forEach((log, index) => {
-                if (index < len - 1) {
-                    log.style.opacity = 0.1;
-                }
-            });
-        }, 100);  // 延迟以便新日志完全添加
-            
-        const itemHeight = item.offsetHeight;
-        const containerHeight = container.offsetHeight;
-        container.scrollTop = container.scrollHeight - containerHeight/2 - itemHeight/2;
-    };
+            setTimeout(() => {
+                const allLogs = document.querySelectorAll('.log-item');
+                const len = allLogs.length;
+                allLogs.forEach((log, index) => {
+                    if (index < len - 1) {
+                        log.style.opacity = 0.1;
+                    }
+                });
+            }, 100);
 
-    window.addEventListener("fetching-bc-start", () => {
-        addLog(electron.i18n("Preload::FetchingBCVersion"));
-    });
+            const itemHeight = item.offsetHeight;
+            const containerHeight = container.offsetHeight;
+            container.scrollTop = container.scrollHeight - containerHeight / 2 - itemHeight / 2;
+        }
 
-    window.addEventListener("fetching-bc-done", (info) => {
-        const [bcv] = info.detail;
-        addLog(electron.i18n("Preload::FetchingBCVersionResult").replace("{version}", bcv.version));
-    });
+        window.addEventListener("fetching-bc-start", () => {
+            addLog(electron.i18n("Preload::FetchingBCVersion"));
+        });
 
-    window.addEventListener("fetching-bc-fb", (info) => {
-        const [bcv] = info.detail;
-        addLog(electron.i18n("Preload::FetchingBCVersionFallback").replace("{version}", bcv.version));
-    });
+        window.addEventListener("fetching-bc-done", (info) => {
+            const [bcv] = info.detail;
+            addLog(electron.i18n("Preload::FetchingBCVersionResult").replace("{version}", bcv.version));
+        });
 
-    window.addEventListener("error", (info) => {
-        const [error] = info.detail;
-        addLog(error);
-    });
+        window.addEventListener("fetching-bc-fb", (info) => {
+            const [bcv] = info.detail;
+            addLog(electron.i18n("Preload::FetchingBCVersionFallback").replace("{version}", bcv.version));
+        });
+
+        window.addEventListener("fetching-bc-fallback-start", () => {
+            addLog(electron.i18n("Preload::FetchingBCVersionFallbackStart"));
+        });
+
+        window.addEventListener("fetching-bc-fallback-try", (info) => {
+            const [data] = info.detail;
+            addLog(
+                electron.i18n("Preload::FetchingBCVersionFallbackTry")
+                    .replace("{version}", data.version)
+            );
+        });
+
+        window.addEventListener("fetching-bc-fallback-miss", (info) => {
+            const [data] = info.detail;
+            addLog(
+                electron.i18n("Preload::FetchingBCVersionFallbackMiss")
+                    .replace("{version}", data.version)
+            );
+        });
+
+        window.addEventListener("fetching-bc-fallback-hit", (info) => {
+            const [data] = info.detail;
+            addLog(
+                electron.i18n("Preload::FetchingBCVersionFallbackHit")
+                    .replace("{version}", data.version)
+            );
+        });
+
+        window.addEventListener("fetching-bc-fallback-unverified", (info) => {
+            const [data] = info.detail;
+            addLog(
+                electron.i18n("Preload::FetchingBCVersionFallbackUnverified")
+                    .replace("{version}", data.version)
+            );
+        });
+
+        window.addEventListener("fetching-bc-error", (info) => {
+            const [error] = info.detail;
+            addLog(error);
+        });
     </script>
 </body>
 

@@ -108,6 +108,12 @@ const translation: Record<TextTag, string> = {
   'Preload::FetchingBCVersionFallback': '使用替代版本号: {version}',
 
   'Alert::Proxy::ClearConfirm': '确认禁用代理并清除代理设置？',
+
+  'Preload::FetchingBCVersionFallbackStart': '无法获取版本信息，开始尝试替代版本...',
+  'Preload::FetchingBCVersionFallbackTry': '正在尝试替代版本: {version}',
+  'Preload::FetchingBCVersionFallbackMiss': '替代版本不可用: {version}',
+  'Preload::FetchingBCVersionFallbackHit': '找到可用替代版本: {version}',
+  'Preload::FetchingBCVersionFallbackUnverified': '使用未验证的替代版本: {version}',
 };
 
 export default translation;
