@@ -1,5 +1,6 @@
 const translation: Record<TextTag, string> = {
   'MenuItem::Tools': '工具',
+  'MenuItem::Tools::LocalCache': '本地磁盘缓存',
   'MenuItem::Tools::OpenCacheDir': '打开缓存数据目录',
   'MenuItem::Tools::ProximateCacheSize': '缓存估计大小（点击刷新）',
   'MenuItem::Tools::StartUICacheUpdate::Loading': '正在加载，关闭窗口以取消',
@@ -109,11 +110,13 @@ const translation: Record<TextTag, string> = {
 
   'Alert::Proxy::ClearConfirm': '确认禁用代理并清除代理设置？',
 
-  'Preload::FetchingBCVersionFallbackStart': '无法获取版本信息，开始尝试替代版本...',
+  'Preload::FetchingBCVersionFallbackStart':
+    '无法获取版本信息，开始尝试替代版本...',
   'Preload::FetchingBCVersionFallbackTry': '正在尝试替代版本: {version}',
   'Preload::FetchingBCVersionFallbackMiss': '替代版本不可用: {version}',
   'Preload::FetchingBCVersionFallbackHit': '找到可用替代版本: {version}',
-  'Preload::FetchingBCVersionFallbackUnverified': '使用未验证的替代版本: {version}',
+  'Preload::FetchingBCVersionFallbackUnverified':
+    '使用未验证的替代版本: {version}',
 };
 
 export default translation;

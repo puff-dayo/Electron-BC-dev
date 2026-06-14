@@ -1,5 +1,6 @@
 const translation: Record<TextTag, string> = {
   'MenuItem::Tools': 'Tools',
+  'MenuItem::Tools::LocalCache': 'Local Disk Cache',
   'MenuItem::Tools::OpenCacheDir': 'Open Cache Directory',
   'MenuItem::Tools::ProximateCacheSize':
     'Proximate Cache Size (Click to Refresh)',
@@ -16,7 +17,8 @@ const translation: Record<TextTag, string> = {
   'MenuItem::Tools::DoHConfigTips': 'DNS over HTTPS Config',
 
   'MenuItem::Tools::EnableProxy': 'Enable HTTP Proxy',
-  'MenuItem::Tools::EnableProxy::Info': 'Route all connections through an HTTP proxy',
+  'MenuItem::Tools::EnableProxy::Info':
+    'Route all connections through an HTTP proxy',
   'MenuItem::Tools::SetProxy': 'Set Proxy Server...',
   'MenuItem::Tools::SetProxy::Placeholder': 'http://127.0.0.1:7890',
   'MenuItem::Tools::SetProxy::Title': 'Set Proxy Server URL',
@@ -119,11 +121,15 @@ const translation: Record<TextTag, string> = {
 
   'Alert::Proxy::ClearConfirm': 'Disable proxy and clear proxy settings?',
 
-  'Preload::FetchingBCVersionFallbackStart': 'Unable to fetch version information, trying fallback versions...',
+  'Preload::FetchingBCVersionFallbackStart':
+    'Unable to fetch version information, trying fallback versions...',
   'Preload::FetchingBCVersionFallbackTry': 'Trying fallback version: {version}',
-  'Preload::FetchingBCVersionFallbackMiss': 'Fallback version unavailable: {version}',
-  'Preload::FetchingBCVersionFallbackHit': 'Found available fallback version: {version}',
-  'Preload::FetchingBCVersionFallbackUnverified': 'Using unverified fallback version: {version}',
+  'Preload::FetchingBCVersionFallbackMiss':
+    'Fallback version unavailable: {version}',
+  'Preload::FetchingBCVersionFallbackHit':
+    'Found available fallback version: {version}',
+  'Preload::FetchingBCVersionFallbackUnverified':
+    'Using unverified fallback version: {version}',
 };
 
 export default translation;

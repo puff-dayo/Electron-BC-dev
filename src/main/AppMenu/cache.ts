@@ -12,6 +12,15 @@ export function cacheMenu({
   const { i18n } = parent;
   return [
     {
+      label: i18n("MenuItem::Tools::LocalCache"),
+      type: "checkbox",
+      checked: AssetCache.isCacheEnabled(),
+      click: () => {
+        AssetCache.toggleCacheEnabled();
+        reloadAllMenu();
+      },
+    },
+    {
       label: i18n("MenuItem::Tools::OpenCacheDir"),
       type: "normal",
       click: () => {

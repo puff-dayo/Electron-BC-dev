@@ -7,6 +7,11 @@ import {
   available,
   initAccess,
 } from "./database";
+import {
+  isCacheEnabled,
+  setCacheEnabled,
+  toggleCacheEnabled,
+} from "./enabled";
 
 export class AssetCache {
   static requestAsset = requestAsset;
@@ -22,4 +27,8 @@ export class AssetCache {
   static available = available;
 
   static init = initAccess;
+
+  static isCacheEnabled = isCacheEnabled;
+  static setCacheEnabled = setCacheEnabled;
+  static toggleCacheEnabled = toggleCacheEnabled;
 }

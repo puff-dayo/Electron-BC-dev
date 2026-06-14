@@ -3,11 +3,12 @@ import LZString from "lz-string";
 import { aquire, fetchAsset, storeAsset } from "./database";
 import { packageFile } from "../utility";
 import settings from "electron-settings";
+import { isCacheEnabled } from "./enabled";
 
 let preloadCacheRunning = false;
 
 export function canPreloadCache() {
-  return !preloadCacheRunning;
+    return isCacheEnabled() && !preloadCacheRunning;
 }
 
 type DirLeaf = string | number;
@@ -19,7 +20,7 @@ interface Dir {
 const preloadDataPath = packageFile("resource/preload.data");
 
 export async function preloadCache(url_prefix: string, verion: string) {
-  if (preloadCacheRunning) return;
+  if (preloadCacheRunning || !isCacheEnabled()) return;
   preloadCacheRunning = true;
 
   const slash_url = url_prefix.endsWith("/") ? url_prefix : `${url_prefix}/`;
@@ -42,6 +43,8 @@ export async function preloadCache(url_prefix: string, verion: string) {
   processList.reverse();
 
   while (processList.length > 0) {
+    if (!isCacheEnabled()) break;
+
     let current = processList.pop() as { container: Dir; path: string };
 
     for (let [key, value] of Object.entries(current.container)) {

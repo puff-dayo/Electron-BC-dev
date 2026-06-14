@@ -1,5 +1,6 @@
 type TextTag =
   | 'MenuItem::Tools'
+  | 'MenuItem::Tools::LocalCache'
   | 'MenuItem::Tools::OpenCacheDir'
   | 'MenuItem::Tools::RelocateCacheDir'
   | 'MenuItem::Tools::ProximateCacheSize'

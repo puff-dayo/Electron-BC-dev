@@ -2,6 +2,7 @@ import { ClassicLevel } from 'classic-level';
 import { net } from 'electron';
 import { getCachePath, relocateCachePath } from './cachePath';
 import { PendingAccess } from '../utility';
+import { isCacheEnabled } from "./enabled";
 
 interface CachedResponse {
   content: Blob;
@@ -37,6 +38,8 @@ export async function storeAsset(
   data: Buffer,
   type: string | null
 ) {
+  if (!isCacheEnabled()) return;
+
   const db = await access!.aquire();
 
   return db
@@ -87,6 +90,10 @@ export async function requestAsset(
   version: string,
   permanent = false
 ): Promise<CachedResponse> {
+  if (!isCacheEnabled()) {
+    return fetchAsset(url);
+  }
+
   const db = await access!.aquire();
   const data = await db.get(key);
   if (data && data.version === version) {
