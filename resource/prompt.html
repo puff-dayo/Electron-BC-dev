@@ -11,14 +11,14 @@
       margin: 0;
       padding: 0;
       background: #f8f8f8;
+      color: #222;
+      color-scheme: light dark;
       box-sizing: border-box;
     }
     body {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 100vw;
-      height: 100vh;
       overflow: hidden;
     }
     .prompt-container {
@@ -27,6 +27,7 @@
       max-width: calc(100vw - 20px);
       max-height: calc(100vh - 20px);
       background: #fff;
+      color: #222;
       border-radius: 8px;
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
       padding: 10px;
@@ -61,6 +62,8 @@
       border: 1px solid #ccc;
       border-radius: 4px;
       margin: 0;
+      background: #fff;
+      color: #222;
     }
     .prompt-buttons {
       display: flex;
@@ -87,6 +90,33 @@
     @media (max-width: 600px) {
       .prompt-input { width: 90vw; }
       .prompt-message { max-width: 95vw; }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      html, body {
+        background: #1f1f1f;
+        color: #f0f0f0;
+      }
+      .prompt-container {
+        background: #242424;
+        color: #f0f0f0;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+      }
+      .prompt-input {
+        background: #2d2d2d;
+        color: #f0f0f0;
+        border-color: #555;
+      }
+      button.confirm {
+        background: #315fb8;
+        color: #f0f0f0;
+        border: 1px solid #5f8dff;
+      }
+      button.cancel {
+        background: #2d2d2d;
+        color: #f0f0f0;
+        border: 1px solid #555;
+      }
     }
   </style>
   <script src="../build/prompt_render.js"></script>
