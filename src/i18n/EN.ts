@@ -130,6 +130,32 @@ const translation: Record<TextTag, string> = {
     'Found available fallback version: {version}',
   'Preload::FetchingBCVersionFallbackUnverified':
     'Using unverified fallback version: {version}',
+
+  'MenuItem::Tools::DiskCache': 'Disk Cache...',
+  'CachePanel::Title': 'Disk Cache',
+  'CachePanel::Statistics': 'Since startup',
+  'CachePanel::Hits': 'Hits',
+  'CachePanel::Misses': 'Misses',
+  'CachePanel::HitRate': 'Hit Rate',
+  'CachePanel::TrafficSaved': 'Traffic Saved',
+  'CachePanel::NoData': 'No requests yet',
+  'CachePanel::CacheSettings': 'Cache Settings',
+  'CachePanel::EnableCache': 'Enable local disk cache',
+  'CachePanel::OpenCacheDir': 'Open Cache Directory',
+  'CachePanel::RelocateCacheDir': 'Relocate Cache Directory',
+  'CachePanel::PreloadUI': 'Preload UI Resources',
+  'CachePanel::PreloadUI::Loading': 'Loading, close window to abort',
+  'CachePanel::CacheSize': 'Cache Size',
+  'CachePanel::CurrentSize': 'Current size',
+  'CachePanel::Refresh': 'Refresh',
+  'CachePanel::ClearCache': 'Clear Cache',
+  'CachePanel::ClearCacheDone': 'Cache cleared.',
+  'CachePanel::Status::RelocateStart': 'Relocating cache directory...',
+  'CachePanel::Status::RelocateDone': 'Cache directory updated.',
+  'CachePanel::Status::PreloadStart': 'Preloading UI resources...',
+  'CachePanel::Status::PreloadDone': 'UI resources preloaded.',
+  'CachePanel::Status::Cleared': 'Cache cleared.',
+  'CachePanel::Status::Error': 'Error: $reason',
 };
 
 export default translation;

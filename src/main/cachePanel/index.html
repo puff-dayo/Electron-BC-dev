@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Disk Cache</title>
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <div class="app">
+    <!-- LEFT -->
+    <aside class="stats-panel">
+      <h1 data-i18n="statistics">Since startup</h1>
+
+      <div class="chart-block">
+        <svg id="pieChart" viewBox="0 0 100 100" width="140" height="140"
+             role="img" aria-label="cache hit/miss chart"></svg>
+        <div id="chartCenter" class="chart-center">
+          <div id="chartCenterRate" class="chart-center-rate">—</div>
+          <div class="chart-center-label" data-i18n="hitRate">Hit Rate</div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item">
+          <span class="legend-swatch hits"></span>
+          <span class="legend-text" data-i18n="hits">Hits</span>
+          <span id="hitsValue" class="legend-value">0</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-swatch misses"></span>
+          <span class="legend-text" data-i18n="misses">Misses</span>
+          <span id="missesValue" class="legend-value">0</span>
+        </div>
+      </div>
+
+      <div class="stat-block">
+        <div class="stat-label" data-i18n="trafficSaved">Traffic Saved</div>
+        <div id="trafficSaved" class="stat-value">0 bytes</div>
+      </div>
+    </aside>
+
+    <!-- RIGHT -->
+    <main class="main-panel">
+      <section class="group">
+        <h2 data-i18n="cacheSettings">Cache Settings</h2>
+
+        <label class="row toggle-row">
+          <span class="row-label" data-i18n="enableCache">Enable local disk cache</span>
+          <input type="checkbox" id="enableCache">
+        </label>
+
+        <div class="row">
+          <button id="openDir" data-i18n="openCacheDir">Open Cache Directory</button>
+        </div>
+
+        <div class="row">
+          <button id="relocateDir" data-i18n="relocateCacheDir">Relocate Cache Directory</button>
+        </div>
+
+        <div class="row">
+          <button id="preloadUI" data-i18n="preloadUI">Preload UI Resources</button>
+        </div>
+      </section>
+
+      <section class="group">
+        <h2 data-i18n="cacheSize">Cache Size</h2>
+
+        <div class="row size-row">
+          <span class="row-label" data-i18n="currentSize">Current size</span>
+          <span id="cacheSize" class="size-value">—</span>
+        </div>
+
+        <div class="row">
+          <button id="refreshSize" data-i18n="refresh">Refresh</button>
+          <button id="clearCache" class="danger" data-i18n="clearCache">Clear Cache</button>
+        </div>
+      </section>
+
+      <div id="status" class="status"></div>
+    </main>
+  </div>
+
+  <script src="./index.js"></script>
+</body>
+</html>

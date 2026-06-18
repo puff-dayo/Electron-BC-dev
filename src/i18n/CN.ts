@@ -117,6 +117,32 @@ const translation: Record<TextTag, string> = {
   'Preload::FetchingBCVersionFallbackHit': '找到可用替代版本: {version}',
   'Preload::FetchingBCVersionFallbackUnverified':
     '使用未验证的替代版本: {version}',
+
+  'MenuItem::Tools::DiskCache': '磁盘缓存…',
+  'CachePanel::Title': '磁盘缓存',
+  'CachePanel::Statistics': '自本次启动',
+  'CachePanel::Hits': '命中',
+  'CachePanel::Misses': '未命中',
+  'CachePanel::HitRate': '命中率',
+  'CachePanel::TrafficSaved': '节省流量',
+  'CachePanel::NoData': '暂无请求',
+  'CachePanel::CacheSettings': '缓存设置',
+  'CachePanel::EnableCache': '启用本地磁盘缓存',
+  'CachePanel::OpenCacheDir': '打开缓存数据目录',
+  'CachePanel::RelocateCacheDir': '修改缓存数据目录',
+  'CachePanel::PreloadUI': '预加载用户界面资源',
+  'CachePanel::PreloadUI::Loading': '正在加载，关闭窗口以取消',
+  'CachePanel::CacheSize': '缓存大小',
+  'CachePanel::CurrentSize': '当前大小',
+  'CachePanel::Refresh': '刷新',
+  'CachePanel::ClearCache': '清除缓存',
+  'CachePanel::ClearCacheDone': '缓存已清除。',
+  'CachePanel::Status::RelocateStart': '正在迁移缓存目录…',
+  'CachePanel::Status::RelocateDone': '缓存目录已更新。',
+  'CachePanel::Status::PreloadStart': '正在预加载用户界面资源…',
+  'CachePanel::Status::PreloadDone': '用户界面资源预加载完成。',
+  'CachePanel::Status::Cleared': '缓存已清除。',
+  'CachePanel::Status::Error': '错误: $reason',
 };
 
 export default translation;

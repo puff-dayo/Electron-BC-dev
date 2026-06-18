@@ -3,6 +3,7 @@ import { net } from 'electron';
 import { getCachePath, relocateCachePath } from './cachePath';
 import { PendingAccess } from '../utility';
 import { isCacheEnabled } from "./enabled";
+import { recordHit, recordMiss } from './stats';
 
 interface CachedResponse {
   content: Blob;
@@ -16,6 +17,9 @@ interface CacheItem {
   version: string;
   type: string | null;
   cacheTime: number;
+  // Byte size of the original asset. Optional for backward compatibility with
+  // entries written before this field existed; falls back to base64 length.
+  size?: number;
 }
 
 function createDatabase() {
@@ -48,6 +52,7 @@ export async function storeAsset(
       version,
       type,
       cacheTime: Date.now(),
+      size: data.length,
     })
     .catch(error => {
       console.error(`Failed to store asset ${key}: ${error}`);
@@ -98,6 +103,11 @@ export async function requestAsset(
   const data = await db.get(key);
   if (data && data.version === version) {
     const content = new Blob([Buffer.from(data.base64Data, 'base64')]);
+    const saved =
+      typeof data.size === 'number'
+        ? data.size
+        : Math.floor(data.base64Data.length * 0.75);
+    recordHit(saved);
     return {
       content,
       type: data.type,
@@ -105,6 +115,7 @@ export async function requestAsset(
       response: createResponse(content, data.type, data.version, permanent),
     };
   } else {
+    recordMiss();
     const { content, type, response } = await fetchAsset(url);
     if (response.status === 200) {
       storeAsset(key, version, Buffer.from(await content.arrayBuffer()), type);

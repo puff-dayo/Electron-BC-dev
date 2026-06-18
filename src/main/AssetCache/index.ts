@@ -12,6 +12,7 @@ import {
   setCacheEnabled,
   toggleCacheEnabled,
 } from "./enabled";
+import { getStats as getCacheStats, type CacheStats } from "./stats";
 
 export class AssetCache {
   static requestAsset = requestAsset;
@@ -31,4 +32,8 @@ export class AssetCache {
   static isCacheEnabled = isCacheEnabled;
   static setCacheEnabled = setCacheEnabled;
   static toggleCacheEnabled = toggleCacheEnabled;
+
+  static getStats = getCacheStats;
 }
+
+export type { CacheStats };
