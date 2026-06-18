@@ -1,3 +1,8 @@
+allowBuilds:
+  classic-level: true
+  electron: true
+  electron-winstaller: true
+  keytar: true
 ignoredBuiltDependencies:
   - classic-level
 onlyBuiltDependencies:
