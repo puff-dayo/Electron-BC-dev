@@ -14,13 +14,13 @@
     "build": "pnpm run compile:prod && electron-builder",
     "dist:windows": "electron-builder --windows nsis:x64 --publish always",
     "dist:linux": "electron-builder --linux AppImage --publish always",
-    "dist:mac": "electron-builder --mac dmg --publish always",
+    "dist:mac": "electron-builder --mac dmg --arm64 --publish always",
+    "dist:mac:x64": "electron-builder --mac dmg --x64 --publish always",
     "changelog-md": "conventional-changelog -p angular -r 5 -o CHANGELOG.md",
     "changelog-html": "node ./scripts/.changelog.js CHANGELOG.md build/changelog.html",
     "push-release": "git checkout -q release && git merge -q --ff-only master && git push && git checkout -q master"
   },
   "devDependencies": {
-    "@electron-delta/builder": "^0.1.17",
     "@types/node": "^24.5.2",
     "@types/semver": "^7.7.1",
     "@electron/rebuild": "^4.0.3",
@@ -56,14 +56,16 @@
       "./Logo.png",
       "build/**",
       "resource/**"
-    ]
+    ],
+    "mac": {
+      "target": "dmg",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    }
   },
   "dependencies": {
-    "@electron-delta/updater": "^0.1.17",
     "classic-level": "^3.0.0",
     "dexie": "^4.2.0",
     "electron-settings": "^4.0.4",
-    "electron-updater": "6.6.2",
     "keytar": "^7.9.0",
     "lz-string": "^1.5.0",
     "yaml": "^2.8.1"

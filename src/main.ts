@@ -1,5 +1,4 @@
 import { app, powerSaveBlocker } from 'electron';
-import { autoUpdater } from 'electron-updater';
 import { Credential } from './main/credential';
 import { MyProtocol } from './main/protocol';
 import { ScriptResource } from './main/script/resource';
@@ -21,8 +20,6 @@ app.whenReady().then(async () => {
     return;
   }
 
-  autoUpdater.checkForUpdatesAndNotify();
-
   ScriptResource.init();
   MyProtocol.init();
   Credential.init();
@@ -39,10 +36,6 @@ app.whenReady().then(async () => {
   mainWindowProvider.createWindow();
 
   powerSaveBlocker.start('prevent-display-sleep');
-
-  if (app.isPackaged) {
-    setInterval(() => autoUpdater.checkForUpdatesAndNotify(), 60000);
-  }
 });
 
 app.on('second-instance', () => {

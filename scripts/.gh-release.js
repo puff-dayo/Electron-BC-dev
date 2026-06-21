@@ -63,14 +63,28 @@ async function createRelease(release) {
     asset.name.endsWith('.AppImage')
   );
 
-  const dmgLine = getAssetLine(assets, 'macOS DMG', tag_name, asset =>
-    asset.name.endsWith('.dmg')
+  const macArm64DmgLine = getAssetLine(
+    assets,
+    'macOS DMG - Apple Silicon',
+    tag_name,
+    asset =>
+      asset.name.endsWith('.dmg') &&
+      /(?:^|[-_\s])arm64(?:[-_.\s]|$)/i.test(asset.name)
+  );
+
+  const macX64DmgLine = getAssetLine(
+    assets,
+    'macOS DMG - Intel (macOS 12+)',
+    tag_name,
+    asset =>
+      asset.name.endsWith('.dmg') &&
+      /(?:^|[-_\s])x64(?:[-_.\s]|$)/i.test(asset.name)
   );
 
   const body = {
     tag_name,
     name,
-    body: `Release ${name}\n\n${setupLine}\n${appImageLine}\n${dmgLine}`,
+    body: `Release ${name}\n\n${setupLine}\n${appImageLine}\n${macArm64DmgLine}\n${macX64DmgLine}`,
     draft: !SHOULD_UNDRAFT,
     prerelease: false,
     make_newest: 'legacy',
