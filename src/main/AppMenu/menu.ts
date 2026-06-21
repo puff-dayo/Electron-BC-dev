@@ -1,4 +1,4 @@
-import { Menu } from 'electron';
+import { Menu, app } from 'electron';
 import { scriptMenu } from './script';
 import { MyAppMenuConstructorOption } from './type';
 import { builtinMenu } from './builtins';
@@ -14,7 +14,24 @@ export function makeMenu(options: MyAppMenuConstructorOption) {
 
   window.title = `Bondage Club - ${options.BCVersion.url}`;
 
-  return Menu.buildFromTemplate([
+  const template: Electron.MenuItemConstructorOptions[] = [];
+
+  if (process.platform === 'darwin') {
+    template.push({
+      label: app.name,
+      submenu: [
+        { role: 'about' },
+        { type: 'separator' },
+        { role: 'hide' },
+        { role: 'hideOthers' },
+        { role: 'unhide' },
+        { type: 'separator' },
+        { role: 'quit' },
+      ],
+    });
+  }
+
+  template.push(
     {
       label: i18n('MenuItem::Tools'),
       id: 'tools' as AppMenuIds,
@@ -68,7 +85,9 @@ export function makeMenu(options: MyAppMenuConstructorOption) {
     scriptMenu(options),
     builtinMenu(options),
     aboutMenu(options),
-  ]);
+  );
+
+  return Menu.buildFromTemplate(template);
 }
 
 export function popupMenu(
