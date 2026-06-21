@@ -63,10 +63,14 @@ async function createRelease(release) {
     asset.name.endsWith('.AppImage')
   );
 
+  const dmgLine = getAssetLine(assets, 'macOS DMG', tag_name, asset =>
+    asset.name.endsWith('.dmg')
+  );
+
   const body = {
     tag_name,
     name,
-    body: `Release ${name}\n\n${setupLine}\n${appImageLine}`,
+    body: `Release ${name}\n\n${setupLine}\n${appImageLine}\n${dmgLine}`,
     draft: !SHOULD_UNDRAFT,
     prerelease: false,
     make_newest: 'legacy',

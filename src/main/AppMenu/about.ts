@@ -92,14 +92,14 @@ export function aboutMenu({
         label: i18n('MenuItem::About::Suggestions'),
         type: 'normal',
         click: () => {
-          shell.openExternal('https://github.com/dynilath/Electron-BC/issues');
+          shell.openExternal('https://github.com/puff-dayo/Electron-BC-dev/issues');
         },
       },
       {
         label: i18n('MenuItem::About::GitHub'),
         type: 'normal',
         click: () => {
-          shell.openExternal('https://github.com/dynilath/Electron-BC');
+          shell.openExternal('https://github.com/puff-dayo/Electron-BC-dev');
         },
       },
     ],
