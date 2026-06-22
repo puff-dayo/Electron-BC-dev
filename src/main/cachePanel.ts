@@ -24,10 +24,15 @@ function currentBCVersion() {
   return BCURLPreference.choice
 }
 
+function cacheExportDefaultName() {
+  const date = new Date().toISOString().slice(0, 10)
+  return `electron-bc-asset-cache-${date}.ebccache.gz`
+}
+
 function registerHandlers(options: OpenCachePanelOptions) {
   if (handlersRegistered) return
-  handlersRegistered = true
 
+  handlersRegistered = true
   const { parent } = options
 
   ipcMain.on('language-change', () => {
@@ -38,6 +43,7 @@ function registerHandlers(options: OpenCachePanelOptions) {
 
   ipcMain.handle('cache-panel:get-i18n', async () => {
     const i18n = parent.i18n
+
     return {
       title: i18n('CachePanel::Title'),
       statistics: i18n('CachePanel::Statistics'),
@@ -63,7 +69,7 @@ function registerHandlers(options: OpenCachePanelOptions) {
       statusPreloadDone: i18n('CachePanel::Status::PreloadDone'),
       statusCleared: i18n('CachePanel::Status::Cleared'),
       statusError: i18n('CachePanel::Status::Error'),
-      alertClearConfirm: i18n('Alert::Cache::ClearConfirm')
+      alertClearConfirm: i18n('Alert::Cache::ClearConfirm'),
     }
   })
 
@@ -73,6 +79,7 @@ function registerHandlers(options: OpenCachePanelOptions) {
 
   ipcMain.handle('cache-panel:get-cache-info', async () => {
     let sizeStr = '—'
+
     try {
       sizeStr = AssetCache.fileSizeStr()
     } catch (error) {
@@ -85,7 +92,7 @@ function registerHandlers(options: OpenCachePanelOptions) {
       available: AssetCache.available(),
       canPreload: AssetCache.canPreloadCache(),
       sizeStr,
-      cacheDir: getCachePath()
+      cacheDir: getCachePath(),
     }
   })
 
@@ -106,7 +113,7 @@ function registerHandlers(options: OpenCachePanelOptions) {
   ipcMain.handle('cache-panel:relocate-cache-dir', async () => {
     const result = await dialog.showOpenDialog(parent.window, {
       properties: ['openDirectory'],
-      defaultPath: getCachePath()
+      defaultPath: getCachePath(),
     })
 
     if (result.canceled) return false
@@ -125,6 +132,7 @@ function registerHandlers(options: OpenCachePanelOptions) {
             )
           })
       )
+
       AssetCache.clearSizeResult()
       reloadAllMenu()
       return true
@@ -135,8 +143,46 @@ function registerHandlers(options: OpenCachePanelOptions) {
     }
   })
 
+  ipcMain.handle('cache-panel:export-cache', async () => {
+    const result = await dialog.showSaveDialog(parent.window, {
+      title: 'Export Asset Cache',
+      defaultPath: cacheExportDefaultName(),
+      filters: [
+        { name: 'Electron-BC Asset Cache', extensions: ['gz'] },
+        { name: 'All Files', extensions: ['*'] },
+      ],
+    })
+
+    if (result.canceled || !result.filePath) return false
+
+    return AssetCache.exportToFile(result.filePath)
+  })
+
+  ipcMain.handle('cache-panel:import-cache', async () => {
+    const result = await dialog.showOpenDialog(parent.window, {
+      title: 'Import Asset Cache',
+      properties: ['openFile'],
+      filters: [
+        { name: 'Electron-BC Asset Cache', extensions: ['gz'] },
+        { name: 'All Files', extensions: ['*'] },
+      ],
+    })
+
+    if (result.canceled || result.filePaths.length === 0) return false
+
+    const summary = await AssetCache.importFromFile(result.filePaths[0], {
+      clearFirst: false,
+    })
+
+    AssetCache.clearSizeResult()
+    reloadAllMenu()
+
+    return summary
+  })
+
   ipcMain.handle('cache-panel:preload-ui', async () => {
     if (!AssetCache.canPreloadCache()) return false
+
     const bcv = currentBCVersion()
     if (!bcv) return false
 
@@ -144,6 +190,7 @@ function registerHandlers(options: OpenCachePanelOptions) {
       reloadAllMenu()
       panelWindow?.webContents?.send?.('cache-panel:preload-done')
     })
+
     reloadAllMenu()
     return true
   })
@@ -173,22 +220,20 @@ export function openCachePanel(options: OpenCachePanelOptions) {
   panelWindow = new BrowserWindow({
     parent: options.parent.window,
     width: 720,
-    height: 520,
+    height: 560,
     minWidth: 600,
-    minHeight: 440,
+    minHeight: 480,
     title: options.parent.i18n('CachePanel::Title'),
     webPreferences: {
       preload: path.join(__dirname, 'cachePanelPreload.js'),
       nodeIntegration: false,
       contextIsolation: true,
-      sandbox: false
-    }
+      sandbox: false,
+    },
   })
 
   panelWindow.removeMenu()
-
   panelWindow.loadFile(path.join(__dirname, 'cachePanel', 'index.html'))
-
   panelWindow.on('closed', () => {
     panelWindow = null
   })

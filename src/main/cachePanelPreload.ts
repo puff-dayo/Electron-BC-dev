@@ -13,6 +13,8 @@ contextBridge.exposeInMainWorld('cachePanel', {
   openCacheDir: () => ipcRenderer.invoke('cache-panel:open-cache-dir'),
 
   relocateCacheDir: () => ipcRenderer.invoke('cache-panel:relocate-cache-dir'),
+  exportCache: () => ipcRenderer.invoke('cache-panel:export-cache'),
+  importCache: () => ipcRenderer.invoke('cache-panel:import-cache'),
 
   preloadUI: () => ipcRenderer.invoke('cache-panel:preload-ui'),
 
@@ -21,5 +23,5 @@ contextBridge.exposeInMainWorld('cachePanel', {
   clearCache: () => ipcRenderer.invoke('cache-panel:clear-cache'),
 
   onLanguageChanged: (callback: () => void) =>
-    ipcRenderer.on('cache-panel:language-changed', () => callback())
+    ipcRenderer.on('cache-panel:language-changed', () => callback()),
 })

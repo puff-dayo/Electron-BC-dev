@@ -34,7 +34,14 @@ const I18N_KEYS = {
   statusPreloadDone: 'statusPreloadDone',
   statusCleared: 'statusCleared',
   statusError: 'statusError',
-  alertClearConfirm: 'alertClearConfirm'
+  alertClearConfirm: 'alertClearConfirm',
+  exportCache: 'exportCache',
+  importCache: 'importCache',
+  statusExportStart: 'statusExportStart',
+  statusExportDone: 'statusExportDone',
+  statusImportStart: 'statusImportStart',
+  statusImportDone: 'statusImportDone',
+  alertImportConfirm: 'alertImportConfirm'
 };
 
 async function loadI18n() {
@@ -47,6 +54,15 @@ async function loadI18n() {
 
   document.title = i18n[I18N_KEYS.title] || 'Disk Cache';
 
+  document.getElementById('exportCache').textContent = t(
+    I18N_KEYS.exportCache,
+    'Export Asset Cache'
+  );
+  document.getElementById('importCache').textContent = t(
+    I18N_KEYS.importCache,
+    'Import Asset Cache'
+  );
+
   renderCacheInfo(lastCacheInfo);
 }
 
@@ -57,14 +73,32 @@ function t(key, fallback) {
 function formatBytes(bytes) {
   if (typeof bytes !== 'number' || !isFinite(bytes)) return '—';
   if (bytes === 0) return '0 bytes';
+
   const units = ['bytes', 'KiB', 'MiB', 'GiB', 'TiB'];
   let value = bytes;
   let index = 0;
+
   while (value >= 1024 && index < units.length - 1) {
     value /= 1024;
     index++;
   }
+
   return value.toFixed(2) + ' ' + units[index];
+}
+
+function formatEntries(count) {
+  return count + ' ' + (count === 1 ? 'entry' : 'entries');
+}
+
+function formatTransferSummary(summary) {
+  if (!summary || typeof summary.entries !== 'number') return '';
+
+  const size =
+    typeof summary.bytes === 'number' && isFinite(summary.bytes)
+      ? ' / ' + formatBytes(summary.bytes)
+      : '';
+
+  return formatEntries(summary.entries) + size;
 }
 
 function status(message, isError) {
@@ -80,7 +114,6 @@ const TRACK_COLOR = '#3a3a3a';
 function renderPieChart(hits, misses) {
   const svg = document.getElementById('pieChart');
   const total = hits + misses;
-
   const r = 40;
   const circumference = 2 * Math.PI * r;
 
@@ -94,7 +127,6 @@ function renderPieChart(hits, misses) {
 
   const hitLen = (hits / total) * circumference;
   const missLen = circumference - hitLen;
-
 
   svg.innerHTML =
     '<circle cx="50" cy="50" r="' + r + '" fill="none" stroke="' +
@@ -126,6 +158,7 @@ let lastCacheInfo = null;
 function renderCacheInfo(info) {
   if (info) lastCacheInfo = info;
   if (!lastCacheInfo) return;
+
   const data = lastCacheInfo;
 
   document.getElementById('enableCache').checked = !!data.cacheEnabled;
@@ -133,10 +166,14 @@ function renderCacheInfo(info) {
     data.sizeStr || (data.sizeBytes ? formatBytes(data.sizeBytes) : '—');
 
   const available = !!data.available;
+
   document.getElementById('relocateDir').disabled = !available;
+  document.getElementById('exportCache').disabled = !available;
+  document.getElementById('importCache').disabled = !available;
   document.getElementById('clearCache').disabled = !available;
 
   const canPreload = !!data.canPreload;
+
   document.getElementById('preloadUI').disabled = !canPreload;
   document.getElementById('preloadUI').textContent = canPreload
     ? t(I18N_KEYS.preloadUI, 'Preload UI Resources')
@@ -188,6 +225,7 @@ async function runAction(label, fn) {
 
 document.getElementById('enableCache').onchange = event => {
   const next = event.target.checked;
+
   runAction(null, async () => {
     await api.setCacheEnabled(next);
     await refreshCacheInfo();
@@ -205,6 +243,56 @@ document.getElementById('relocateDir').onclick = () => {
     await api.relocateCacheDir();
     await refreshCacheInfo();
     status(t(I18N_KEYS.statusRelocateDone, 'Cache directory updated.'), false);
+  });
+};
+
+document.getElementById('exportCache').onclick = () => {
+  runAction(t(I18N_KEYS.statusExportStart, 'Exporting asset cache...'), async () => {
+    const summary = await api.exportCache();
+
+    if (!summary) {
+      status('', false);
+      return;
+    }
+
+    status(
+      t(I18N_KEYS.statusExportDone, 'Asset cache exported: $summary.').replace(
+        '$summary',
+        formatTransferSummary(summary)
+      ),
+      false
+    );
+  });
+};
+
+document.getElementById('importCache').onclick = () => {
+  runAction(null, async () => {
+    const ok = window.confirm(
+      t(
+        I18N_KEYS.alertImportConfirm,
+        'Importing a cache file will merge it into the current cache and overwrite matching cached assets. Continue?'
+      )
+    );
+
+    if (!ok) return;
+
+    status(t(I18N_KEYS.statusImportStart, 'Importing asset cache...'), false);
+
+    const summary = await api.importCache();
+
+    if (!summary) {
+      status('', false);
+      return;
+    }
+
+    await refreshCacheInfo();
+    status(
+      t(I18N_KEYS.statusImportDone, 'Asset cache imported: $summary.').replace(
+        '$summary',
+        formatTransferSummary(summary)
+      ),
+      false
+    );
   });
 };
 
@@ -228,7 +316,9 @@ document.getElementById('clearCache').onclick = () => {
     const ok = window.confirm(
       t(I18N_KEYS.alertClearConfirm, 'Confirm to clear cache?')
     );
+
     if (!ok) return;
+
     await api.clearCache();
     await refreshCacheInfo();
     status(t(I18N_KEYS.statusCleared, 'Cache cleared.'), false);
