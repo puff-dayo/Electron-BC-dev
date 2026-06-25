@@ -1,11 +1,13 @@
 import EN from './EN';
 import CN from './CN';
+import TW from './TW';
 
-type LanguageSetting = 'EN' | 'DE' | 'FR' | 'FR' | 'RU' | 'CN';
+type LanguageSetting = 'EN' | 'DE' | 'FR' | 'RU' | 'CN' | 'TW' | 'UA';
 
 const lang_map = new Map<LanguageSetting, Record<TextTag, string>>([
   ["EN", EN],
   ["CN", CN],
+  ["TW", TW],
 ]);
 
 let global_instance: i18nText | null = null;

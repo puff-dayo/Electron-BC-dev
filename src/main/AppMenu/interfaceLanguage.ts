@@ -1,13 +1,13 @@
 import settings from 'electron-settings';
 
-export type InterfaceLanguageOverride = 'follow' | 'EN' | 'CN';
+export type InterfaceLanguageOverride = 'follow' | 'EN' | 'CN' | 'TW';
 
 const interfaceLanguageOverrideKey = 'settings.interfaceLanguageOverride';
 
 function normalizeInterfaceLanguageOverride(
   value: unknown
 ): InterfaceLanguageOverride {
-  if (value === 'EN' || value === 'CN') return value;
+  if (value === 'EN' || value === 'CN' || value === 'TW') return value;
   return 'follow';
 }
 

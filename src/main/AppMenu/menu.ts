@@ -76,6 +76,12 @@ export function makeMenu(options: MyAppMenuConstructorOption) {
               click: () => setInterfaceLanguageOverride('EN'),
             },
             {
+              label: '正體中文（台灣）',
+              type: 'radio',
+              checked: currentInterfaceLanguageOverride === 'TW',
+              click: () => setInterfaceLanguageOverride('TW'),
+            },
+            {
               label: '简体中文（中国）',
               type: 'radio',
               checked: currentInterfaceLanguageOverride === 'CN',

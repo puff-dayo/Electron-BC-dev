@@ -95,10 +95,10 @@ const translation: Record<TextTag, string> = {
   'MenuItem::BuiltIns::Intro': '点击下面的按钮来开关内置支持功能',
   'MenuItem::BuiltIns::CredentialSupport': '内置凭据支持',
   'MenuItem::BuiltIns::CredentialSupport::Info':
-    '使用操作系统凭据管理器保存密码',
+    '操作系统凭据管理',
   'Credential::SavedCredential': '已保存的凭据🔑',
   'MenuItem::BuiltIns::AutoRelog': '自动重连',
-  'MenuItem::BuiltIns::AutoRelog::Info': '断线自动重连，需要启用凭据支持',
+  'MenuItem::BuiltIns::AutoRelog::Info': '需要启用凭据',
   'MenuItem::Script::InstallTips': '可以点击游戏中的脚本链接来安装脚本',
   'Alert::LoadPackage::InputPackageURL': '输入脚本包网址',
   'Alert::LoadPackage::PleaseInputCorrectUrl':
