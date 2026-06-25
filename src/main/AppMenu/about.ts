@@ -1,6 +1,5 @@
 import { app, shell } from 'electron';
 import { MyAppMenuConstructorOption } from './type';
-import { openChangelog } from '../changelog';
 
 
 export function aboutMenu({
@@ -30,7 +29,7 @@ export function aboutMenu({
         label: i18n('MenuItem::About::ChangeLog'),
         type: 'normal',
         click: () => {
-          openChangelog();
+          shell.openExternal('https://gitgud.io/BondageProjects/Bondage-College/-/blob/master/BondageClub/CHANGELOG.md?ref_type=heads');
         },
       },
       {

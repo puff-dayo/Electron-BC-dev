@@ -71,7 +71,7 @@ const translation: Record<TextTag, string> = {
     "請輸入正確的網址，格式應該類似 'https://example.com/script.user.js'",
   'Alert::Title': '提示',
   'MenuItem::About': '關於',
-  'MenuItem::About::ChangeLog': '顯示 Electron-BC 更新日誌',
+  'MenuItem::About::ChangeLog': '顯示 BC 更新日誌',
   'MenuItem::About::Suggestions': '建議或回饋',
   'MenuItem::About::GitHub': '訪問GitHub原始碼',
   'MenuItem::About::BCVersion': 'BondageClub 版本',

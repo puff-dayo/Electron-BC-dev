@@ -74,7 +74,7 @@ const translation: Record<TextTag, string> = {
     "请输入正确的网址，格式应该类似于 'https://example.com/script.user.js'",
   'Alert::Title': '提示',
   'MenuItem::About': '关于',
-  'MenuItem::About::ChangeLog': '显示 Electron-BC 更新日志',
+  'MenuItem::About::ChangeLog': '显示 BC 更新日志',
   'MenuItem::About::Suggestions': '建议或反馈',
   'MenuItem::About::GitHub': '访问GitHub源码',
   'MenuItem::About::BCVersion': 'BondageClub 版本',

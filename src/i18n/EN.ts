@@ -81,7 +81,7 @@ const translation: Record<TextTag, string> = {
   'Alert::Title': 'Alert',
   'MenuItem::About': 'About',
   'MenuItem::About::Suggestions': 'Suggestions or Feedback',
-  'MenuItem::About::ChangeLog': 'Show Electron-BC Change Log',
+  'MenuItem::About::ChangeLog': 'Show BC Change Log',
   'MenuItem::About::GitHub': 'Visit GitHub Repo',
   'MenuItem::About::BCVersion': 'BondageClub Version',
   'MenuItem::About::ChooseBCURL': 'Choose BondageClub URL',
