@@ -21,7 +21,6 @@ export function proxyMenu({
   return [
     {
       label: i18n('MenuItem::Tools::EnableProxy'),
-      sublabel: i18n('MenuItem::Tools::EnableProxy::Info'),
       type: 'checkbox',
       checked: config.enabled,
       click: async () => {

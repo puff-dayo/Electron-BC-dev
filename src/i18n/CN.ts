@@ -1,5 +1,5 @@
 const translation: Record<TextTag, string> = {
-  'MenuItem::Tools': '工具',
+  'MenuItem::Tools': '文件',
   'MenuItem::Tools::LocalCache': '本地磁盘缓存',
   'MenuItem::Tools::OpenCacheDir': '打开缓存数据目录',
   'MenuItem::Tools::ProximateCacheSize': '缓存估计大小（点击刷新）',
@@ -10,13 +10,19 @@ const translation: Record<TextTag, string> = {
   'MenuItem::Tools::Refresh': '刷新页面',
   'MenuItem::Tools::FullScreen': '全屏模式',
   'MenuItem::Tools::Exit': '退出',
+  'MenuItem::Tools::Language': '设置界面语言',
+  'MenuItem::Tools::Language::Follow': '跟随游戏',
 
   'MenuItem::Tools::OpenDoHConfigFile': '打开DoH配置文件',
   'MenuItem::Tools::DoHConfigTips': 'DNS over HTTPS 配置',
+  'MenuItem::Network': '网络',
+  'MenuItem::Network::Proxy': '代理',
+  'MenuItem::Network::DoH': '在HTTPS上查询DNS',
+  'MenuItem::Network::DiskCache': '磁盘缓存',
 
-  'MenuItem::Tools::EnableProxy': '启用HTTP代理',
+  'MenuItem::Tools::EnableProxy': '启用代理',
   'MenuItem::Tools::EnableProxy::Info': '所有网络连接通过HTTP代理',
-  'MenuItem::Tools::SetProxy': '设置代理服务器...',
+  'MenuItem::Tools::SetProxy': '设置 HTTP/SOCKS5 代理',
   'MenuItem::Tools::SetProxy::Placeholder': 'http://127.0.0.1:7890',
   'MenuItem::Tools::SetProxy::Title': '设置代理服务器URL',
   'MenuItem::Tools::SetProxy::InvalidUrl':
@@ -83,7 +89,9 @@ const translation: Record<TextTag, string> = {
   'Alert::Credential::Change': '保存用户USERNAME的密码修改？',
   'Alert::Credential::New': '保存新的用户USERNAME？',
   'Alert::Credential::Saved': '已保存USERNAME的凭据。',
-  'MenuItem::BuiltIns': '内置支持',
+  'MenuItem::BuiltIns': '游戏',
+  'MenuItem::BuiltIns::BMM': '模组管理器+',
+  'MenuItem::BuiltIns::BMMInfo': '注入 BMM 工具',
   'MenuItem::BuiltIns::Intro': '点击下面的按钮来开关内置支持功能',
   'MenuItem::BuiltIns::CredentialSupport': '内置凭据支持',
   'MenuItem::BuiltIns::CredentialSupport::Info':
@@ -143,6 +151,11 @@ const translation: Record<TextTag, string> = {
   'CachePanel::Status::PreloadDone': '用户界面资源预加载完成。',
   'CachePanel::Status::Cleared': '缓存已清除。',
   'CachePanel::Status::Error': '错误: $reason',
+
+  'MenuItem::Edit': '编辑',
+  'Edit::Copy': '复制',
+  'Edit::Paste': '粘贴',
+  'Edit::SelectAll': '选择全部'
 };
 
 export default translation;

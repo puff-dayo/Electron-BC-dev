@@ -133,7 +133,9 @@ export function scriptMenu ({
         click: () => openScriptProfilePanel({
           parent,
           scriptState,
-          refreshPage
+            refreshPage: async () => {
+              await refreshPage()
+            }
         })
       },
       {

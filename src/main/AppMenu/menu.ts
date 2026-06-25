@@ -3,17 +3,23 @@ import { scriptMenu } from './script';
 import { MyAppMenuConstructorOption } from './type';
 import { builtinMenu } from './builtins';
 import { aboutMenu } from './about';
-import { cacheMenu } from './cache';
 import { proxyMenu } from './proxy';
 import { DoH } from '../DoH';
+import { openCachePanel } from '../cachePanel';
 import { EBCSetting } from '../../settings';
 
 export function makeMenu(options: MyAppMenuConstructorOption) {
-  const { refreshPage, parent } = options;
+  const {
+    refreshPage,
+    parent,
+    interfaceLanguageOverride,
+    setInterfaceLanguageOverride,
+  } = options;
   const { window, i18n } = parent;
+  const currentInterfaceLanguageOverride = interfaceLanguageOverride();
   window.title = `Bondage Club - ${options.BCVersion.url}`;
-
   const template: Electron.MenuItemConstructorOptions[] = [];
+
   if (process.platform === 'darwin') {
     template.push({
       label: app.name,
@@ -52,36 +58,82 @@ export function makeMenu(options: MyAppMenuConstructorOption) {
           accelerator: 'F12',
           click: () => window.webContents.toggleDevTools(),
         },
+        { type: 'separator' },
         {
-          type: 'separator',
+          label: i18n('MenuItem::Tools::Language'),
+          type: 'submenu',
+          submenu: [
+            {
+              label: i18n('MenuItem::Tools::Language::Follow'),
+              type: 'radio',
+              checked: currentInterfaceLanguageOverride === 'follow',
+              click: () => setInterfaceLanguageOverride('follow'),
+            },
+            {
+              label: 'English (US)',
+              type: 'radio',
+              checked: currentInterfaceLanguageOverride === 'EN',
+              click: () => setInterfaceLanguageOverride('EN'),
+            },
+            {
+              label: '简体中文（中国）',
+              type: 'radio',
+              checked: currentInterfaceLanguageOverride === 'CN',
+              click: () => setInterfaceLanguageOverride('CN'),
+            },
+          ],
         },
-        ...cacheMenu(options),
-        {
-          type: 'separator',
-        },
-        ...proxyMenu(options),
-        {
-          type: 'separator',
-        },
-        {
-          label: i18n('MenuItem::Tools::OpenDoHConfigFile'),
-          sublabel: i18n('MenuItem::Tools::DoHConfigTips'),
-          type: 'normal',
-          click: () => DoH.openConfigFile(),
-        },
-        {
-          type: 'separator',
-        },
+        { type: 'separator' },
         {
           label: i18n('MenuItem::Tools::Exit'),
           type: 'normal',
-          accelerator: 'Alt+F4',
-          click: () => window.close(),
+          accelerator: process.platform === 'darwin' ? 'Command+Q' : 'Alt+F4',
+          click: () => app.quit(),
+        },
+      ],
+    },
+    {
+      label: i18n('MenuItem::Edit'),
+      submenu: [
+        {
+          label: i18n('Edit::Copy'),
+          role: 'copy',
+          accelerator: 'CmdOrCtrl+C',
+        },
+        {
+          label: i18n('Edit::Paste'),
+          role: 'paste',
+          accelerator: 'CmdOrCtrl+V',
+        },
+        {
+          label: i18n('Edit::SelectAll'),
+          role: 'selectAll',
+          accelerator: 'CmdOrCtrl+A',
         },
       ],
     },
     ...(EBCSetting.modManagerPlus.get() ? [] : [scriptMenu(options)]),
     builtinMenu(options),
+    {
+      label: i18n('MenuItem::Network'),
+      submenu: [
+        {
+          label: i18n('MenuItem::Network::Proxy'),
+          type: 'submenu',
+          submenu: proxyMenu(options),
+        },
+        {
+          label: i18n('MenuItem::Network::DoH'),
+          type: 'normal',
+          click: () => DoH.openConfigFile(),
+        },
+        {
+          label: i18n('MenuItem::Network::DiskCache'),
+          type: 'normal',
+          click: () => openCachePanel({ parent }),
+        },
+      ],
+    },
     aboutMenu(options)
   );
 

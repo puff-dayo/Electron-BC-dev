@@ -16,6 +16,12 @@ import { Credential } from './credential';
 import { BCURLPreference } from '../urlprefer';
 import { EBCSetting } from '../settings';
 import { injectModManagerPlus } from './modManagerPlus';
+import {
+  getInterfaceLanguageOverride,
+  InterfaceLanguageOverride,
+  resolveInterfaceLanguage,
+  setInterfaceLanguageOverride,
+} from './AppMenu/interfaceLanguage';
 
 const icon = packageFile('Logo.png');
 
@@ -25,10 +31,14 @@ function mainWindowAfterLoad(
 ) {
   const i18ntext = new i18nText();
   const i18n = (tag: TextTag) => i18ntext.get(tag);
+  let gameLanguage = 'EN';
+  let currentInterfaceLanguageOverride = getInterfaceLanguageOverride();
+  i18ntext.update(resolveInterfaceLanguage(gameLanguage, currentInterfaceLanguageOverride));
 
   readyState.loaded().then(async () => {
     const bcVersion = BCURLPreference.choice;
     const shouldUpdate = await checkCacheVersion(bcVersion);
+
     if (shouldUpdate) {
       MyPrompt.confirmCancel(
         { window: mainWindow, i18n },
@@ -45,12 +55,28 @@ function mainWindowAfterLoad(
 
   const webContents = mainWindow.webContents;
   const scriptState = new ScriptState(webContents);
+  let reloadMenu = () => {};
+  const applyInterfaceLanguageOverride = (
+    override: InterfaceLanguageOverride
+  ) => {
+    currentInterfaceLanguageOverride = override;
+    i18ntext.update(
+      resolveInterfaceLanguage(gameLanguage, currentInterfaceLanguageOverride)
+    );
+    reloadMenu();
+  };
   const appMenu = new MyAppMenu({
     refreshPage: () => readyState.reload(),
     parent: { window: mainWindow, i18n },
     scriptState,
+    interfaceLanguageOverride: () => currentInterfaceLanguageOverride,
+    setInterfaceLanguageOverride: async override => {
+      await setInterfaceLanguageOverride(override);
+      applyInterfaceLanguageOverride(override);
+    },
   });
-  const reloadMenu = () => appMenu.emit('reload');
+
+  reloadMenu = () => appMenu.emit('reload');
   const mReloadMenu = async (event: Electron.IpcMainEvent, webID?: number) => {
     if (webID === undefined || webID === webContents.id) reloadMenu();
   };
@@ -71,7 +97,10 @@ function mainWindowAfterLoad(
   ) => {
     if (event.sender.id === webContents.id) {
       console.log('language-change', lang);
-      i18ntext.update(lang);
+      gameLanguage = lang;
+      i18ntext.update(
+        resolveInterfaceLanguage(gameLanguage, currentInterfaceLanguageOverride)
+      );
       reloadMenu();
     }
   };
@@ -100,6 +129,7 @@ function mainWindowAfterLoad(
     { text, defaultText }: { text?: string; defaultText?: string }
   ) => {
     if (event.sender.id !== webContents.id) return;
+
     MyPrompt.input(
       { window: mainWindow, i18n },
       { title: text, inputPlaceholder: defaultText }
@@ -117,13 +147,13 @@ function mainWindowAfterLoad(
       callback({ requestHeaders: { ...details.requestHeaders } });
     }
   );
-
   const onLogined = Credential.createOnLoginListener({
     window: mainWindow,
     i18n,
   });
 
   reloadMenu();
+
   ipcMain.on('reload-menu', mReloadMenu);
   ipcMain.on('load-script-url', mLoadScriptURL);
   ipcMain.on('language-change', mLanguageChange);

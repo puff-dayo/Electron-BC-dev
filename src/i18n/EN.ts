@@ -1,5 +1,5 @@
 const translation: Record<TextTag, string> = {
-  'MenuItem::Tools': 'Tools',
+  'MenuItem::Tools': 'File',
   'MenuItem::Tools::LocalCache': 'Local Disk Cache',
   'MenuItem::Tools::OpenCacheDir': 'Open Cache Directory',
   'MenuItem::Tools::ProximateCacheSize':
@@ -12,14 +12,21 @@ const translation: Record<TextTag, string> = {
   'MenuItem::Tools::Refresh': 'Refresh Page',
   'MenuItem::Tools::FullScreen': 'Full Screen Mode',
   'MenuItem::Tools::Exit': 'Exit',
+  'MenuItem::Tools::Language': 'Interface Language',
+  'MenuItem::Tools::Language::Follow': 'Follow game',
 
   'MenuItem::Tools::OpenDoHConfigFile': 'Open DoH Config File',
-  'MenuItem::Tools::DoHConfigTips': 'DNS over HTTPS Config',
+  'MenuItem::Tools::DoHConfigTips': 'DNS over HTTPS',
 
-  'MenuItem::Tools::EnableProxy': 'Enable HTTP Proxy',
+  'MenuItem::Network': 'Network',
+  'MenuItem::Network::Proxy': 'Proxy',
+  'MenuItem::Network::DoH': 'DNS over HTTPS',
+  'MenuItem::Network::DiskCache': 'Disk Cache',
+
+  'MenuItem::Tools::EnableProxy': 'Enable Proxy',
   'MenuItem::Tools::EnableProxy::Info':
     'Route all connections through an HTTP proxy',
-  'MenuItem::Tools::SetProxy': 'Set Proxy Server...',
+  'MenuItem::Tools::SetProxy': 'Config HTTP/SOCKS5 Proxy',
   'MenuItem::Tools::SetProxy::Placeholder': 'http://127.0.0.1:7890',
   'MenuItem::Tools::SetProxy::Title': 'Set Proxy Server URL',
   'MenuItem::Tools::SetProxy::InvalidUrl':
@@ -92,15 +99,17 @@ const translation: Record<TextTag, string> = {
   'Alert::Credential::Change': 'Save the password change for user USERNAME?',
   'Alert::Credential::New': 'Save new user USERNAME?',
   'Alert::Credential::Saved': 'Credential saved for USERNAME.',
-  'MenuItem::BuiltIns': 'Built-ins',
+  'MenuItem::BuiltIns': 'Game',
+  'MenuItem::BuiltIns::BMM': 'Mod Manager+',
+  'MenuItem::BuiltIns::BMMInfo': 'Inject BMM tools',
   'MenuItem::BuiltIns::Intro': 'Click buttons below to toggle built-in support',
   'MenuItem::BuiltIns::CredentialSupport': 'Built-in Credential Support',
   'MenuItem::BuiltIns::CredentialSupport::Info':
-    'Save passwords using OS credential manager',
+    'OS credential manager',
   'Credential::SavedCredential': 'Saved Credentials🔑',
   'MenuItem::BuiltIns::AutoRelog': 'Auto Relog',
   'MenuItem::BuiltIns::AutoRelog::Info':
-    'Relog on disconnect, requires credential support',
+    'Requires credential on',
   'MenuItem::Script::InstallTips':
     'Can also install scripts by clicking links in game',
   'Alert::LoadPackage::InputPackageURL': 'Input script package URL',
@@ -156,6 +165,11 @@ const translation: Record<TextTag, string> = {
   'CachePanel::Status::PreloadDone': 'UI resources preloaded.',
   'CachePanel::Status::Cleared': 'Cache cleared.',
   'CachePanel::Status::Error': 'Error: $reason',
+
+  'MenuItem::Edit': 'Edit',
+  'Edit::Copy': 'Copy',
+  'Edit::Paste': 'Paste',
+  'Edit::SelectAll': 'Select All'
 };
 
 export default translation;
