@@ -1,20 +1,24 @@
 import { ipcMain } from "electron";
 import settings from "electron-settings";
 
-const settingsKey = ["credentialSupport", "autoRelogin"] as const;
+const settingsKey = ["credentialSupport", "autoRelogin", "modManagerPlus"] as const;
 export type SettingsKey = (typeof settingsKey)[number];
 
 class Setting {
   key: string;
+  defaultValue: boolean;
+
   constructor(key: SettingsKey) {
     this.key = `settings.${key}`;
+    this.defaultValue = key === "modManagerPlus";
     settings.has(this.key).then((hasKey) => {
-      if (!hasKey) settings.set(this.key, false);
+      if (!hasKey) settings.set(this.key, this.defaultValue);
     });
   }
 
   get() {
-    return settings.getSync(this.key) as boolean;
+    const value = settings.getSync(this.key);
+    return typeof value === "boolean" ? value : this.defaultValue;
   }
 
   set(value: boolean) {
@@ -24,7 +28,12 @@ class Setting {
   toggle() {
     return settings
       .get(this.key)
-      .then((value) => settings.set(this.key, !value))
+      .then((value) =>
+        settings.set(
+          this.key,
+          !(typeof value === "boolean" ? value : this.defaultValue)
+        )
+      )
       .then(() => Promise.resolve());
   }
 }

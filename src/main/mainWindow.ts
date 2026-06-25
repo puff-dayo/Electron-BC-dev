@@ -14,6 +14,8 @@ import { AssetCache } from './AssetCache';
 import { MyAppMenu } from './AppMenu';
 import { Credential } from './credential';
 import { BCURLPreference } from '../urlprefer';
+import { EBCSetting } from '../settings';
+import { injectModManagerPlus } from './modManagerPlus';
 
 const icon = packageFile('Logo.png');
 
@@ -22,7 +24,6 @@ function mainWindowAfterLoad(
   readyState: ContentLoadState
 ) {
   const i18ntext = new i18nText();
-
   const i18n = (tag: TextTag) => i18ntext.get(tag);
 
   readyState.loaded().then(async () => {
@@ -43,17 +44,13 @@ function mainWindowAfterLoad(
   });
 
   const webContents = mainWindow.webContents;
-
   const scriptState = new ScriptState(webContents);
-
   const appMenu = new MyAppMenu({
     refreshPage: () => readyState.reload(),
     parent: { window: mainWindow, i18n },
     scriptState,
   });
-
   const reloadMenu = () => appMenu.emit('reload');
-
   const mReloadMenu = async (event: Electron.IpcMainEvent, webID?: number) => {
     if (webID === undefined || webID === webContents.id) reloadMenu();
   };
@@ -144,8 +141,19 @@ function mainWindowAfterLoad(
 
   webContents.on('dom-ready', async () => {
     checkAndAnounce({ window: mainWindow, i18n });
-    await readyState.loaded();
-    await scriptState.loadScript();
+
+    if (EBCSetting.modManagerPlus.get()) {
+      try {
+        await injectModManagerPlus(webContents);
+      } catch (err) {
+        console.error('Mod Manager+ injection failed', err);
+      }
+      await readyState.loaded();
+    } else {
+      await readyState.loaded();
+      await scriptState.loadScript();
+    }
+
     reloadMenu();
   });
 
@@ -183,21 +191,15 @@ async function makeMainWindow(winName: string) {
     },
     icon,
   });
-
   const webContents = win.webContents;
-
   const { url } = BCURLPreference.choice;
-
   const readyState = new ContentLoadState(webContents);
-
   win.loadURL(url);
-
   mainWindowAfterLoad(win.window, readyState);
 }
 
 export class MainWindowProvider {
   winCounter = 0;
-
   constructor() {}
 
   async createWindow() {

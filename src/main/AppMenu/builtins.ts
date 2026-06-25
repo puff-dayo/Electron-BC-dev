@@ -1,9 +1,14 @@
 import { EBCSetting } from "../../settings";
 import { reloadAllMenu } from "../reloadAllMenu";
+import {
+  MOD_MANAGER_PLUS_REPOSITORY_URL,
+  openModManagerPlusRepository,
+} from "../modManagerPlus";
 import { MyAppMenuConstructorOption } from "./type";
 
 export function builtinMenu({
   parent,
+  refreshPage,
 }: MyAppMenuConstructorOption): Electron.MenuItemConstructorOptions {
   const { i18n } = parent;
   return {
@@ -14,11 +19,21 @@ export function builtinMenu({
         type: "normal",
         enabled: false,
       },
+      { type: "separator" },
       {
-        type: "separator",
+        label: "Mod Manager+",
+        type: "checkbox",
+        sublabel:
+          "Inject the mod manager",
+        checked: EBCSetting.modManagerPlus.get(),
+        click: async () => {
+          await EBCSetting.modManagerPlus.toggle();
+          reloadAllMenu();
+          await refreshPage();
+        },
       },
       {
-        label: "🧩" + i18n("MenuItem::BuiltIns::CredentialSupport"),
+        label: "" + i18n("MenuItem::BuiltIns::CredentialSupport"),
         type: "checkbox",
         sublabel: i18n("MenuItem::BuiltIns::CredentialSupport::Info"),
         checked: EBCSetting.credentialSupport.get(),
@@ -28,7 +43,7 @@ export function builtinMenu({
         },
       },
       {
-        label: "🧩" + i18n("MenuItem::BuiltIns::AutoRelog"),
+        label: "" + i18n("MenuItem::BuiltIns::AutoRelog"),
         type: "checkbox",
         sublabel: i18n("MenuItem::BuiltIns::AutoRelog::Info"),
         checked: EBCSetting.autoRelogin.get(),

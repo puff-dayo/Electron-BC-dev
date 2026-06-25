@@ -6,16 +6,14 @@ import { aboutMenu } from './about';
 import { cacheMenu } from './cache';
 import { proxyMenu } from './proxy';
 import { DoH } from '../DoH';
+import { EBCSetting } from '../../settings';
 
 export function makeMenu(options: MyAppMenuConstructorOption) {
   const { refreshPage, parent } = options;
-
   const { window, i18n } = parent;
-
   window.title = `Bondage Club - ${options.BCVersion.url}`;
 
   const template: Electron.MenuItemConstructorOptions[] = [];
-
   if (process.platform === 'darwin') {
     template.push({
       label: app.name,
@@ -82,9 +80,9 @@ export function makeMenu(options: MyAppMenuConstructorOption) {
         },
       ],
     },
-    scriptMenu(options),
+    ...(EBCSetting.modManagerPlus.get() ? [] : [scriptMenu(options)]),
     builtinMenu(options),
-    aboutMenu(options),
+    aboutMenu(options)
   );
 
   return Menu.buildFromTemplate(template);
